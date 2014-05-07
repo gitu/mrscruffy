@@ -1,0 +1,62 @@
+#!/usr/bin/env python
+
+import suml.yuml2dot
+import StringIO
+import scruffy
+import subprocess
+
+
+import sys
+import optparse
+
+parser = optparse.OptionParser(usage='usage: %prog [options] <sUML string>')
+parser.add_option('-p', '--png', action='store_true', dest='png',
+                help='create a png file')
+parser.add_option('-s', '--svg', action='store_true', dest='svg',
+                help='create a svg file')
+parser.add_option('--scruffy', action='store_true', dest='scruffy',
+                help='process result with scruffy (works for svg and png output_file)')
+parser.add_option('--shadow', action='store_true', dest='shadow', default=False,
+                help='add shadow to scruffy output_file')
+parser.add_option('--class', action='store_true', dest='klass',
+                help='draw class diagram')
+parser.add_option('-o', '--output_file', action='store', dest='output_file',
+                help='output_file file name')
+parser.add_option('-i', '--input_file', action='store', dest='input_file',
+                help='input_file file name')
+parser.add_option('--font-family', action='store', dest='font',
+                help='set output_file font family')
+(options, args) = parser.parse_args()
+
+fout = sys.stdout
+if options.output_file:
+    fout = open(options.output_file, 'wb')
+
+if options.input_file:
+    spec = open(options.input_file, 'r').read()
+elif len(args) == 0:
+    lines = sys.stdin.read()
+    spec = lines.replace('\n', ',')
+else:
+    spec = args[0]
+
+
+
+def hasFont(font_name):
+    """ Checks if font is installed (using fc-list; are there other possibilities?) """
+    stdout = subprocess.Popen(['fc-list', font_name], shell=True, stdout=subprocess.PIPE).stdout
+    return len(stdout.readlines()) > 0
+
+def defaultScruffyFont():
+    """ Returns installed font with scruffy look """
+    for font_name in ('Purisa',):
+        if hasFont(font_name):
+            return font_name
+    return None
+
+if not options.font:
+    options.font = defaultScruffyFont()
+
+
+svg = subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=spec)[0]
+scruffy.transform(svg, fout, options)
