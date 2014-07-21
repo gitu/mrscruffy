@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="{% if automaton %}col-lg-3{% else %}col-lg-12{% endif %}">
+        <form method="POST" action="{{ url_for('analyze_grammar') }}">
+            <label for="type">Type</label>
+            <div clas="control-group">
+                {{ form.type(class_='form-control') }}
+            </div>
+            <div class="control-group">
+                <label for="source">Source</label>
+                {{ form.source(rows=10, class_='form-control', placeholder="Enter Source") }}
+                {% for error in form.source.errors %}
+                    <span class="text-danger">{{ error }}<br /></span>
+                {% endfor %}
+            </div>
+            <div style="margin-top:10px;">
+            <button type="submit" class="btn btn-lg btn-primary">
+                Generate Scruffy
+            </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
