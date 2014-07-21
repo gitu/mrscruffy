@@ -1,2 +1,2 @@
-gttps://github.com/weibeld/heroku-buildpack-graphviz-deb.git
-https://github.com/heroku/heroku-buildpack-python.git
+gttps://github.com/weibeld/heroku-buildpack-graphviz-deb
+https://github.com/heroku/heroku-buildpack-python
