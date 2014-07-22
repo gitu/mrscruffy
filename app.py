@@ -11,8 +11,14 @@ from config import config
 app = Flask(__name__)
 app.config.update(config)
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['GET'])
 def index():
+    form = IndexForm(request.form)
+    return render_template('index.html', form=form)
+	
+	
+@app.route('/', methods=['POST'])
+def parse():
     form = IndexForm(request.form)
     return render_template('index.html', form=form)
 
