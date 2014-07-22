@@ -1,8 +1,12 @@
 language: python
 python:
-  - "3.3"
-install: "pip install -r requirements.txt"
+- '3.3'
+install: pip install -r requirements.txt
 script: nosetests
 deploy:
   provider: heroku
+  api_key:
+    secure: C0LVil5crPLMdwFIhkFFk5XUI7Oavo1834AZUkBGK1ly5bxykr3Q4z0fnfKNH6GRilyWigoQf7Tqx1GyFjCF2q30AKBLLUnDjHuzb51/0bey+u3XgX39X707MIkKGkRU4CTv12HFHAi5uwMYMAi9WH4pVVzGFY93Ga39FxXvazc=
   app: mrscruffy
+  on:
+    repo: gitu/mrscruffy
