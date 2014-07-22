@@ -6,8 +6,10 @@ from flask import render_template
 from flask import flash
 
 from forms import IndexForm
+from config import config
 
 app = Flask(__name__)
+app.config.update(config)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
