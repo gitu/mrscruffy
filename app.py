@@ -1,15 +1,14 @@
-import re
 import subprocess
+import StringIO
+import cairosvg
 
 from flask import Flask
 from flask import request
 from flask import render_template
 
 import scruffy
-
 from forms import IndexForm
 from config import config
-import StringIO
 
 app = Flask(__name__)
 app.config.update(config)
@@ -30,6 +29,8 @@ def parse():
         fin = form.data['source']
         svg = subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=fin)[0]
         scruffy.transform(svg, fout, options)
+        if form.data['type'] == 'png':
+            return cairosvg.svg2png(fout)
         return render_template('index.html', form=form, svg=fout.getvalue())
     return render_template('index.html', form=form)
 
