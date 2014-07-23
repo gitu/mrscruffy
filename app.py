@@ -30,7 +30,7 @@ def parse():
         fin = form.data['source']
         svg = subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=fin)[0]
         scruffy.transform(svg, fout, options)
-        return fout.getvalue()
+        return render_template('index.html', form=form, svg=fout.getvalue())
     return render_template('index.html', form=form)
 
 
