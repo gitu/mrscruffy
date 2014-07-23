@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+<div class="row page-header">
+    <div class="col-lg-12">
+        <div><h1>MrScruffy</h1></div>
+    </div>
+</div>
 <div class="row">
     <div class="{% if automaton %}col-lg-3{% else %}col-lg-12{% endif %}">
         <form method="POST" action="{{ url_for('parse') }}">

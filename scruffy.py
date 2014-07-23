@@ -162,7 +162,7 @@ def _transform(root, options, level=0):
         # Skip background rect/polygon
         if child.tag == ns('polygon') and level != 0:
             transformPolygon(child)
-            if options.shadow:
+            if options['shadow']:
                 transformAddShade(root, child)
             transformAddGradient(child)
 
@@ -174,8 +174,8 @@ def _transform(root, options, level=0):
             #see class diagram - shade of inside line
             transformAddShade(root, child)
         elif child.tag == ns('text'):
-            if options.font:
-                transformText(child, options.font)
+            if options['font']:
+                transformText(child, options['font'])
 
         _transform(child, options, level + 1)
 
@@ -198,9 +198,9 @@ def transform(fin, fout, options):
     '''
     pp = re.compile('<polygon fill="([^"]+)" stroke="none" points="([^"]+)"/>')
     for p in pp.findall(fin):
-	if fin.find('<polygon fill="none" stroke="black" points="'+p[1]+'"/>') > 0:
-	  fin = fin.replace('<polygon fill="none" stroke="black" points="'+p[1]+'"/>','<polygon fill="'+p[0]+'" stroke="black" points="'+p[1]+'"/>')
-	  fin = fin.replace('<polygon fill="'+p[0]+'" stroke="none" points="'+p[1]+'"/>','')
+        if fin.find('<polygon fill="none" stroke="black" points="'+p[1]+'"/>') > 0:
+            fin = fin.replace('<polygon fill="none" stroke="black" points="'+p[1]+'"/>','<polygon fill="'+p[0]+'" stroke="black" points="'+p[1]+'"/>')
+            fin = fin.replace('<polygon fill="'+p[0]+'" stroke="none" points="'+p[1]+'"/>','')
     
     etree.register_namespace('', 'http://www.w3.org/2000/svg')
     root = etree.parse(StringIO.StringIO(fin)).getroot()
@@ -214,7 +214,7 @@ def transform(fin, fout, options):
 
     scruffySvg = etree.tostring(root) + '\n'
 
-    if options.png:
+    if options['png']:
         import subprocess
         png = subprocess.Popen(['rsvg-convert', '-f', 'png', '-d', '180', '-p', '180'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=scruffySvg)[0]
         fout.write(png)
