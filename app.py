@@ -27,7 +27,7 @@ def parse():
     if form.validate():
         fout = StringIO.StringIO()
         fin = form.data['source']
-        svg = subprocess.Popen(['dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=fin)[0]
+        svg = subprocess.Popen(['/usr/bin/dot', '-Tsvg'], stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate(input=fin)[0]
         scruffy.transform(svg, fout, options)
         if form.data['type'] == 'png':
             return cairosvg.svg2png(fout)
